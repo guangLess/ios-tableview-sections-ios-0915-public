@@ -7,8 +7,11 @@
 //
 
 #import "FISTableViewController.h"
+#import "FISStudent.h"
 
 @interface FISTableViewController ()
+
+@property(strong,nonatomic)NSArray * students;
 
 @end
 
@@ -17,31 +20,62 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    FISStudent * guang = [[FISStudent alloc] init];
+    guang.favoriteThings = @[@"making art things",@"playing silly with shane",@"",@""];
+    guang.name = @"guang";
+    FISStudent * ari = [[FISStudent alloc] init];
+    ari.favoriteThings = @[@"finding ari", @"being a yummy bottle of water",@""];
+    ari.name = @"ari";
+    FISStudent * olivia = [[FISStudent alloc] init];
+    olivia.favoriteThings = @[@"writing art papers",@"taking art history classes"];
+    olivia.name = @"olivia";
+    self.students = @[guang, ari, olivia];
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
-}
-
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     
-    // Configure the cell...
+    return (int)self.students.count;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+
+    FISStudent *student = [self.students objectAtIndex:(NSUInteger)section];
+    NSInteger studentSum = (NSInteger)student.favoriteThings.count;
+    
+    return studentSum;
+
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    FISStudent * student = [self.students objectAtIndex:(NSUInteger)section];
+    
+    return student.name;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"expandingCell" forIndexPath:indexPath];
+    
+    NSInteger * studentIndex = indexPath.row;
+    NSInteger * testIndex = indexPath.section;
+    NSLog(@"studentIndex %lu testindex %lu",studentIndex,testIndex);
+    
+    FISStudent * testStudent = [[FISStudent alloc] init];
+    testStudent = self.students[(NSUInteger)testIndex];
+    
+    //NSIndexPath * fav = tableView.indexPathsForSelectedRows;
+    
+    cell.textLabel.text = testStudent.favoriteThings[(NSUInteger)studentIndex];
+    
+    
+     //FISStudent * test = self.students[0];
+    
+    //cell.textLabel.text = @"Hello";
     
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.
